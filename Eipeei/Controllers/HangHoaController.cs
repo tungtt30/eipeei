@@ -33,6 +33,8 @@ namespace Eipeei.Controllers
             }
 
         }
+
+
         [HttpPost]
         public IActionResult Create(HangHoaVM hangHoaVM)
         {
@@ -48,6 +50,57 @@ namespace Eipeei.Controllers
                 success = true,
                 data = hanghoa
             });
+        }
+
+        [HttpPut("{id})")]
+        public IActionResult Edit(string id, HangHoa hanghoaEdit)
+        {
+            try
+            {
+                // LINQ [Object] query
+                var hangHoa = hangHoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
+                if (hangHoa == null)
+                {
+                    return NotFound();
+                }
+                // update
+                if (id != hangHoa.MaHangHoa.ToString())
+                {
+                    return BadRequest();
+                }
+                hangHoa.TenHangHoa = hanghoaEdit.TenHangHoa;
+                hangHoa.DonGia = hanghoaEdit.DonGia;
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Remove(string id)
+        {
+            try
+            {
+                // LINQ [Object] query
+                var hangHoa = hangHoas.SingleOrDefault(hh => hh.MaHangHoa == Guid.Parse(id));
+                if (hangHoa == null)
+                {
+                    return NotFound();
+                }
+                // update
+                if (id != hangHoa.MaHangHoa.ToString())
+                {
+                    return BadRequest();
+                }
+                hangHoas.Remove(hangHoa);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
